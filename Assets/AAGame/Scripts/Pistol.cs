@@ -16,6 +16,7 @@ public class Pistol : Item {
     override
     public void Collect() {
         player.hasGun = true;
+        player.updateAmmoText();
         base.Collect();
     }
 }

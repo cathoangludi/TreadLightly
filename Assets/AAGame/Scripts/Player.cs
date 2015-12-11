@@ -2,11 +2,13 @@
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     FPSPistol gun;
     FirstPersonController playerScript;
+    Text ammoText;
     Animator anim;
     public int health;
     private bool m_Interact;
@@ -21,10 +23,12 @@ public class Player : MonoBehaviour {
     void Start () {
         gun = GameObject.Find("/FPSController/FirstPersonCharacter/FPSPistol").GetComponent<FPSPistol>();
         playerScript = GameObject.Find("/FPSController").GetComponent<FirstPersonController>();
+        ammoText = GameObject.Find("/Canvas/AmmoDisplay").GetComponent<Text>();
         anim = GetComponent<Animator>();
         ammo = 5;
         health = 15;
         anim.enabled = false;
+        updateAmmoText();
     }
 	
 	// Update is called once per frame
@@ -77,6 +81,7 @@ public class Player : MonoBehaviour {
     public void Shoot() {
         if (gun.Shoot()) {
             ammo--;
+            updateAmmoText();
         }
     }
 
@@ -92,6 +97,7 @@ public class Player : MonoBehaviour {
 
     public void AddAmmo(int amount) {
         ammo += amount;
+        updateAmmoText();
     }
 
     public bool isDead() {
@@ -115,5 +121,17 @@ public class Player : MonoBehaviour {
 
     public void DisableAnim() {
         anim.enabled = false;
+    }
+
+    public void updateAmmoText()
+    {
+        if (hasGun)
+        {
+            ammoText.text = "Current Ammo: " + ammo;
+        }
+        else
+        {
+            ammoText.text = "";
+        }
     }
 }
